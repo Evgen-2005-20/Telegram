@@ -5,7 +5,7 @@ from aiogram.fsm.storage.redis import RedisStorage
 
 from bot.config import settings
 from bot.db.db import rd
-from bot.handlers import start
+from bot.handlers import start, register
 from bot.middlewares import typing
 
 
@@ -17,8 +17,13 @@ async def main():
     dp.message.middleware(typing.TypingMessage())
     
     dp.include_router(start.router)
+    dp.include_router(register.router)
     
-    await dp.start_polling(bot)
+    try:
+        await dp.start_polling(bot)
+    finally:
+        await bot.session.close()
+        await rd.close()
     
     
 if __name__ == "__main__":

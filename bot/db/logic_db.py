@@ -27,13 +27,14 @@ class RedisDataBase(DataBase):
     def __init__(self, redis_client : Redis):
         self.redis_client = redis_client
     
-    async def create_user(self, username, user_id, email) -> bool:
+    async def create_user(self, username, user_id, email, number) -> bool:
         try:
             await self.redis_client.hset(name=f"user:{user_id}",
                                      mapping={
                                          "username" : username,
                                          "email" : email,
-                                         "balance" : 0
+                                         "balance" : 0,
+                                         "number" : number
                                      })
             
             return True
