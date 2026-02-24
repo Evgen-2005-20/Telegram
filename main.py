@@ -5,7 +5,7 @@ from aiogram.fsm.storage.redis import RedisStorage
 
 from bot.config import settings
 from bot.db.db import rd
-from bot.handlers import start, register
+from bot.handlers import start, register, profile
 from bot.middlewares import typing
 
 
@@ -18,6 +18,7 @@ async def main():
     
     dp.include_router(start.router)
     dp.include_router(register.router)
+    dp.include_router(profile.router)
     
     try:
         await dp.start_polling(bot)
