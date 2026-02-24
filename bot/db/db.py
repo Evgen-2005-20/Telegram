@@ -1,8 +1,8 @@
-import redis
+from redis.asyncio import Redis
 
 from bot.config import settings
 
-rd = redis.Redis(
+rd = Redis(
     host=settings.HOST,
     port=settings.PORT,
     decode_responses=True
