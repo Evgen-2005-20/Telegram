@@ -27,7 +27,7 @@ class RedisDataBase(DataBase):
     def __init__(self, redis_client : Redis):
         self.redis_client = redis_client
     
-    async def create_user(self, username, user_id, email, number) -> bool:
+    async def create_user(self, username : str, user_id : int, email : str, number : str) -> bool:
         try:
             await self.redis_client.hset(name=f"user:{user_id}",
                                      mapping={
@@ -43,7 +43,7 @@ class RedisDataBase(DataBase):
        
     
     
-    async def delete_user(self, user_id):
+    async def delete_user(self, user_id : int):
         try:
             await self.redis_client.delete(f"user:{user_id}")
         
@@ -52,7 +52,7 @@ class RedisDataBase(DataBase):
             return False
         
         
-    async def get_user(self, user_id) -> dict:
+    async def get_user(self, user_id : int) -> dict:
         result = await self.redis_client.hgetall(f"user:{user_id}")
         
         return result

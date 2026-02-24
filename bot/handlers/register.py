@@ -53,6 +53,7 @@ async def get_number(message: Message, state: FSMContext):
         username=message.from_user.first_name,
         user_id=message.from_user.id,
         email=data["email"],
+        number=data['number']
     )
 
     if result:
