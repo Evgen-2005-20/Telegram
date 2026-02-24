@@ -7,7 +7,7 @@ from redis.asyncio import Redis
 
 class DataBase(ABC):
     @abstractmethod 
-    async def create_user(self, username : str, user_id, email : str) -> bool:
+    async def create_user(self, username : str, user_id, email : str, number : str) -> bool:
         pass
     
     @abstractmethod 
@@ -75,8 +75,17 @@ class RedisDataBase(DataBase):
             if email is not None:
                 mapping["email"] = email
 
-            await self.redis_client.hset(user_id, mapping=mapping)
+            await self.redis_client.hset(key, mapping=mapping)
 
             return True
         except Exception as e:
             return False
+        
+    async def change_balance(self, user_id: int, amount: int) -> int:
+        key = f"user:{user_id}"
+
+        if not await self.redis_client.exists(key):
+            return None
+
+        new_balance = await self.redis_client.hincrby(key, "balance", amount)
+        return new_balance
